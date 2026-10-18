@@ -534,34 +534,6 @@ The bodies are ChaCha20-Poly1305 sealed. In clear text only the HTTP headers app
     └── embed.py            # generates webui.h
 ```
 
-### `.gitignore`
-
-```gitignore
-# build artifacts
-build/
-*.o
-*.obj
-*.exe
-*.lib
-*.exp
-*.pdb
-*.ilk
-
-# generated
-webui.h
-sessions.jsonl
-sessions.jsonl.events
-
-# secrets
-certs/
-*.key
-*.crt
-
-# environment
-.vscode/
-.idea/
-```
-
 ---
 
 ## License
